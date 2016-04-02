@@ -45,18 +45,17 @@ Person List::getHead(){
 }*/
 
 Person List::at(int posicion){
-	Node* temp=head;
-	Person actual;
-	int i=0;
-	while(temp->hasNext()){
-		if(i==posicion){
-			actual=temp->getValue();
-			break;
+	if(posicion>=0 && posicion<this->size()){
+		int i=0;
+		Node* temp=head;
+		while(i<=posicion){
+			temp=temp->getNext();
+			i++;
 		}
-		i++;
-		temp=temp->getNext();
+		return temp->getValue();
+	}else{
+		throw "Error";
 	}
-	return actual;
 }
 void List::erase(int posicion){
 	if(posicion>=0 && posicion<this->size()){
@@ -70,7 +69,11 @@ void List::erase(int posicion){
 	}
 }
 void List::concat(List* lista){
-
+	Node* temp  = head ;
+	while(temp->hasNext()){
+		temp = temp->getNext();
+	}
+	temp -> setNext(lista->first());
 }
 
 int List::find(Person persona){
@@ -78,8 +81,10 @@ int List::find(Person persona){
 	int i=0;
 	while (temp->hasNext()){
 		if(!strcmp(persona.getName(),temp->getValue().getName())){
-			addch(i + 48);
-			return i;
+			if(!i){
+				return i;
+			}
+			return i-1;
 		}
 		temp=temp->getNext();
 		i++;
