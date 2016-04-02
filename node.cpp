@@ -3,7 +3,7 @@
 #include "person.hpp"
 
 Node::Node(){
-
+	this-> next = NULL;
 }
 
 Node::Node(Person persona):persona(persona),next(NULL){
@@ -23,7 +23,8 @@ Node* Node::getNext(){
 }
 
 void Node::setValue(Person persona){
-	this->persona=persona;
+	this->persona.setName(persona.getName());
+	this->persona.setPhone(persona.getPhone());
 }
 
 void Node::setNext(Node* next){

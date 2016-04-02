@@ -1,6 +1,7 @@
 #include "list.hpp"
 #include "person.hpp"
 #include "node.hpp"
+#include <ncurses.h>
 #include <iostream>
 
 List::List(){
@@ -13,13 +14,13 @@ List::~List(){
 
 }
 void List::setHead(Person persona){
-	this->head=head;
+	this->head = new Node(persona);
 }
 Person List::getHead(){
 	Person x=head->getValue();
 	return x;
 }
-void List::insert(int posicion, Person persona){
+/*void List::insert(int posicion, Person persona){
 	Node* temp= head;
 	if(posicion==0){
 		if(head!=NULL){
@@ -41,7 +42,7 @@ void List::insert(int posicion, Person persona){
 			}
 		}
 	}
-}
+}*/
 
 Person List::at(int posicion){
 	Node* temp=head;
@@ -58,33 +59,32 @@ Person List::at(int posicion){
 	return actual;
 }
 void List::erase(int posicion){
-	Node* temp=head;
-	Node* otro;
-	int i=0;
-	while(temp->hasNext()){
-		if(i==posicion){
-			Person eliminar=temp->getValue();
+	if(posicion>=0 && posicion<this->size()){
+		int i=0;
+		Node* primero=head;
+		while(i<posicion){
+			primero=primero->getNext();
+			i++;
 		}
-		i++;
-		otro=temp;
-		temp=temp->getNext();
+		primero->setNext(primero->getNext()?primero->getNext()->getNext():NULL);
 	}
-
 }
 void List::concat(List* lista){
 
 }
+
 int List::find(Person persona){
 	Node* temp=head;
 	int i=0;
 	while (temp->hasNext()){
-		if(persona.getName()==temp->getValue().getName()){
-			break;
+		if(!strcmp(persona.getName(),temp->getValue().getName())){
+			addch(i + 48);
+			return i;
 		}
 		temp=temp->getNext();
 		i++;
 	}
-	return i;
+	return -1;
 }
 int List::size(){
 	int i=0;
@@ -102,16 +102,12 @@ void List::push_back(Person persona){
 		this->setHead(persona);
 	}
 	Node* temp  = head ;
-	temp -> setNext(NULL);
-	if(!temp -> hasNext()){
-		temp->setNext(new Node(persona));
-	}else{
-		while(temp->hasNext()){
-			temp = temp->getNext();
-		}
-		temp -> setNext(new Node(persona));
+	while(temp->hasNext()){
+		temp = temp->getNext();
 	}
+	temp -> setNext(new Node(persona));
 }
+
 Node* List::first(){
 	return head;
 }

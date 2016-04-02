@@ -11,7 +11,7 @@ node.o:	person.hpp node.hpp node.cpp
 	g++ -c node.cpp
 
 list.o:	person.hpp node.hpp list.hpp list.cpp
-	g++ -c list.cpp
+	g++ -c list.cpp -lncurses
 
 clean:
 	rm *.o FriendList
